@@ -73,6 +73,12 @@ variable "helm_repo_opencloudcx" {
   default     = " https://opencloudcx.github.io/grafana-helm/"
 }
 
+variable "helm_jenkins" {
+  description = "A repository url of the helm chart to deploy jenkins."
+  type        = string
+  default     = "https://charts.jenkins.io"
+}
+
 variable "helm_timeout" {
   description = "Timeout value to wailt for helm chat deployment"
   type        = number
