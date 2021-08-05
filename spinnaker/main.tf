@@ -59,3 +59,18 @@ module "spinnaker-managed-role" {
   stack            = "dev"
   trusted_role_arn = [module.opencloudcx.role_arn]
 }
+  
+resource "helm_release" "jenkins" {
+  name             = "jenkins"
+  chart            = "jenkins"
+  namespace        = "jenkins"
+  repository       = var.helm_jenkins
+  timeout          = var.helm_timeout
+  create_namespace = true
+  reset_values     = false
+
+  depends_on = [
+    aws_eks_cluster.eks,
+    aws_eks_node_group.ng,
+  ]
+}
