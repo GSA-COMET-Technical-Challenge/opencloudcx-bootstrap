@@ -93,7 +93,7 @@ Once Terraform instructions have been applied, the following message will be dis
 
 << INSERT MESSAGE HERE>>
 ### Retrieve EKS cluster name 
-```aws eks list-clusters --profile gsa-comet --region us-east-1 | jq -r ".clusters[0]"```
+```aws eks list-clusters --profile PROFILE_NAME --region REGION | jq -r ".clusters[0]"```
 
 ### Validate Installation
 
