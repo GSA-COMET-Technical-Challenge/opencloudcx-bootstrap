@@ -114,6 +114,13 @@ Navigate to http://localhost:3000/ in your browser to access Grafana
 ```kubectl -n opencloudcx port-forward svc/prometheus 9090:9090```<br />
 Navigate to http://localhost:9090/ in your browser to access Prometheus
 
+#### Jenkins
+```kubectl -n jenkins port-forward svc/jenkins 8080:8080```<br />
+Navigate to http://localhost:8080/ in your browser to access Prometheus
+##### Jenkins Default Password
+``` printf $(kubectl get secret --namespace jenkins jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode);echo```
+
+
 #### External Access to Spinnaker
 ```Run the following command to change node type to LoadBalancer
 kubectl -n spinnaker edit svc  spin-deck
