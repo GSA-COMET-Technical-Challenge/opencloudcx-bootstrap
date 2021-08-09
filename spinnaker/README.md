@@ -92,6 +92,8 @@ AWS_PROFILE=<profile name> terraform apply --autu-approve
 Once Terraform instructions have been applied, the following message will be displayed 
 
 << INSERT MESSAGE HERE>>
+### Retrieve EKS cluster name 
+```aws eks list-clusters --profile gsa-comet --region us-east-1 | jq -r ".clusters[0]"```
 
 ### Validate Installation
 
