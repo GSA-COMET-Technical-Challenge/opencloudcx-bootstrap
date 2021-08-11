@@ -116,6 +116,10 @@ Navigate to http://localhost:3000/ in your browser to access Grafana
 ```kubectl -n opencloudcx port-forward svc/prometheus 9090:9090```<br />
 Navigate to http://localhost:9090/ in your browser to access Prometheus
 
+#### Sonarqube
+```kubectl -n sonarqube port-forward svc/sonarqube-sonarqube 9001:9000```<br />
+Navigate to http://localhost:9001/ in your browser to access Sonarqube
+
 #### Jenkins
 ```kubectl -n jenkins port-forward svc/jenkins 8080:8080```<br />
 Navigate to http://localhost:8080/ in your browser to access Prometheus
