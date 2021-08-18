@@ -33,7 +33,7 @@ variable "kubernetes_version" {
 
 variable "kubernetes_node_groups" {
   description = "Node group definitions"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -42,7 +42,7 @@ variable "kubernetes_node_groups" {
 ### rdb cluster (aurora-mysql)
 variable "aurora_cluster" {
   description = "RDS Aurora for mysql cluster definition"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
