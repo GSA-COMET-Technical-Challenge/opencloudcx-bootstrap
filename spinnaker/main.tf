@@ -2,6 +2,18 @@
 
 terraform {
   required_version = "~> 0.14.2"
+
+  backend "s3" {
+    key    = "opencloudcx"
+    bucket = "gsa-comet-opencloudcx-state-bucket"
+    region = "us-east-1"
+  }
+}
+
+resource "random_string" "random" {
+  length  = 8
+  special = false
+  upper   = false
 }
 
 provider "aws" {
@@ -17,10 +29,11 @@ provider "aws" {
   version             = ">= 3.0"
 }
 
-
 module "opencloudcx" {
   source  = "OpenCloudCX/opencloudcx/aws"
-  version = ">= 0.3.6"
+  version = ">= 0.3.11"
+
+  # source = "../../terraform-aws-opencloudcx"
 
   name               = "example"
   stack              = "dev"
@@ -39,6 +52,11 @@ module "opencloudcx" {
       desired_size  = "2"
     }
   }
+
+  jenkins_secret   = random_password.jenkins_password.result
+  sonarqube_secret = random_password.sonarqube_password.result
+  # portainer_secret = aws_secretsmanager_secret.portainer_secret
+
   aurora_cluster = {
     node_size = "1"
     node_type = "db.t3.medium"
@@ -49,10 +67,11 @@ module "opencloudcx" {
   assume_role_arn    = [module.spinnaker-managed-role.role_arn]
 }
 
-# spinnaker managed role
 module "spinnaker-managed-role" {
   source  = "OpenCloudCX/opencloudcx/aws//modules/spinnaker-managed-aws"
-  version = "~> 0.3.6"
+  version = "~> 0.3.11"
+
+  # source = "../../terraform-aws-opencloudcx/modules/spinnaker-managed-aws"
 
   providers        = { aws = aws.prod }
   name             = "example"
