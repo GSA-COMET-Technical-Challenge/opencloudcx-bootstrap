@@ -22,3 +22,7 @@ output "kubeconfig" {
   value       = module.opencloudcx.kubeconfig
   description = "Bash script to update the kubeconfig file for the EKS cluster"
 }
+
+output "ingress_hostname" {
+  value = module.opencloudcx.ingress_hostname
+}

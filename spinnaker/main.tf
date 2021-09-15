@@ -5,7 +5,7 @@ terraform {
 
   backend "s3" {
     key    = "opencloudcx"
-    bucket = "gsa-comet-opencloudcx-state-bucket"
+    bucket = "opencloudcx-state-bucket-0044"
     region = "us-east-1"
   }
 }
@@ -30,20 +30,20 @@ provider "aws" {
 }
 
 module "opencloudcx" {
-  source  = "OpenCloudCX/opencloudcx/aws"
-  version = ">= 0.3.11"
+  # source  = "OpenCloudCX/opencloudcx/aws"
+  # version = ">= 0.3.11"
 
-  # source = "../../terraform-aws-opencloudcx"
+  source = "../../terraform-aws-opencloudcx"
 
-  name               = "example"
+  name               = "riva"
   stack              = "dev"
   detail             = "module-test"
   tags               = { "env" = "dev" }
   region             = "us-east-1"
   azs                = ["us-east-1a", "us-east-1b", "us-east-1c"]
   cidr               = "10.0.0.0/16"
-  dns_zone           = "your.private"
-  kubernetes_version = "1.18"
+  dns_zone           = "riva-cicd-0044.local"
+  kubernetes_version = "1.21"
   kubernetes_node_groups = {
     default = {
       instance_type = "m5.large"
@@ -68,13 +68,13 @@ module "opencloudcx" {
 }
 
 module "spinnaker-managed-role" {
-  source  = "OpenCloudCX/opencloudcx/aws//modules/spinnaker-managed-aws"
-  version = "~> 0.3.11"
+  # source  = "OpenCloudCX/opencloudcx/aws//modules/spinnaker-managed-aws"
+  # version = "~> 0.3.11"
 
-  # source = "../../terraform-aws-opencloudcx/modules/spinnaker-managed-aws"
+  source = "../../terraform-aws-opencloudcx/modules/spinnaker-managed-aws"
 
   providers        = { aws = aws.prod }
-  name             = "example"
+  name             = "riva"
   stack            = "dev"
   trusted_role_arn = [module.opencloudcx.role_arn]
 }

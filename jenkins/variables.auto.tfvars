@@ -1,0 +1,1 @@
+jenkins_url = "http://jenkins.riva-cicd-0044.local"

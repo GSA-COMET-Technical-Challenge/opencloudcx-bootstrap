@@ -11,3 +11,7 @@ variable "jenkins_username" {
 variable "jenkins_secret" {
   type = string
 }
+
+variable "jenkins_url" {
+  type = string
+}
