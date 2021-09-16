@@ -15,3 +15,11 @@ variable "jenkins_secret" {
 variable "jenkins_url" {
   type = string
 }
+
+variable "github_username" {
+  type = string
+}
+
+variable "github_secret" {
+  type = string
+}
