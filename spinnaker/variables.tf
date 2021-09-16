@@ -122,3 +122,8 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "dockerhub_secret" {
+  type    = string
+}
+

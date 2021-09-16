@@ -9,7 +9,7 @@
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <url>https://github.com/ajn-riva/opencloudcx-kaniko.git</url>
-        <credentialsId>8c6ab66e-20fb-46b3-8c7a-9f2d448e5930</credentialsId>
+        <credentialsId>${credentialsId}</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>

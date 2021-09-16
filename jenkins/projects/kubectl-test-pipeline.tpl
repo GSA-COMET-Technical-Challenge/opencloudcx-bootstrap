@@ -19,7 +19,7 @@
     stages {
         stage(&apos;Checkout&apos;) {
             steps {
-                git branch: &apos;main&apos;, credentialsId: &apos;8c6ab66e-20fb-46b3-8c7a-9f2d448e5930&apos;, url: &apos;https://github.com/ajn-riva/opencloudcx-kaniko.git&apos;
+                git branch: &apos;main&apos;, credentialsId: &apos;${credentialsId}&apos;, url: &apos;https://github.com/ajn-riva/opencloudcx-kaniko.git&apos;
             }   
         }
         stage(&apos;Build docker image and publish&apos;) {

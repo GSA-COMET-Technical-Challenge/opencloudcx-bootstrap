@@ -16,6 +16,7 @@ provider "jenkins" {
 locals {
   jenkins_freestyle_kubectl_job = templatefile("${path.module}/projects/kubectl-test.tpl", {
     kubectl_version = var.kubectl_version
+    credentialsId   = "ajnriva-github"
     }
   )
 }
@@ -23,6 +24,7 @@ locals {
 locals {
   jenkins_pipeline_kubectl_job = templatefile("${path.module}/projects/kubectl-test-pipeline.tpl", {
     kubectl_version = var.kubectl_version
+    credentialsId   = "ajnriva-github"
     }
   )
 }
@@ -37,3 +39,8 @@ resource "jenkins_job" "kubectl_test_pipeline" {
   template = local.jenkins_pipeline_kubectl_job
 }
 
+resource "jenkins_credential_username" "jenkins_github_secret" {
+  name     = "ajnriva-github"
+  username = var.github_username
+  password = var.github_secret
+}
