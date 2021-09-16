@@ -65,6 +65,10 @@ module "opencloudcx" {
   helm_chart_version = "2.2.3"
   helm_chart_values  = [file("values.yaml")]
   assume_role_arn    = [module.spinnaker-managed-role.role_arn]
+
+  dockerhub_secret_name = "ajnriva-cred"
+  dockerhub_username = "ajnriva"
+  dockerhub_secret = var.dockerhub_secret
 }
 
 module "spinnaker-managed-role" {
