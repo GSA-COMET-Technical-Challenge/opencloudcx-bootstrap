@@ -1,5 +1,11 @@
 # Full example of spinnaker module for AWS
 
+## TODO
+- Remove port-forward documentation and provide ingress urls
+- Document terraform version download and alias
+
+
+
 ## Usage example
 You can use this module like below. This shows how to create the resources for spinnaker. This module will create vpc, subnets, s3 bucket, iam policies and kubernetes cluster.
 
