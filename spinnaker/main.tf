@@ -55,6 +55,8 @@ module "opencloudcx" {
 
   jenkins_secret   = random_password.jenkins_password.result
   sonarqube_secret = random_password.sonarqube_password.result
+  github_access_token = var.github_access_token
+  aws_account_id = var.aws_account_id
   # portainer_secret = aws_secretsmanager_secret.portainer_secret
 
   aurora_cluster = {
