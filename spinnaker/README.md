@@ -5,7 +5,7 @@
 ---
 
 # TL;DR
-1. terraform init/terraform apply
+1. aws setup // terraform init // terraform apply
 1. update environment
     - local hosts file with load balancer ip
     - awd-auth config map with aws role
@@ -96,9 +96,8 @@ is 1.0.7. You can update by downloading from https://www.terraform.io/downloads.
 
 ```https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/```
 
-
 ---
-
+---
 
 # Phase 1 -- Base Functionality
 
@@ -114,7 +113,7 @@ The first step is to set up the spinnaker cluster -- installation of all base fu
     * Portainer
     * Sonarqube
 
-Below is an example of the `main.tf` file required to build the cluster
+Below is an example of the `main.tf` file required to build the cluster. This file should be in a directory with the `variables.auto.tfvars` and `secrets.auto.tfvars`. For Terraform, any filetype of `.tfvars` with `.auto.` in the name will automatically be used during plan, apply, and destroy.
 
 ```hcl
 # Complete example
@@ -232,8 +231,9 @@ github_access_token   = [github_access_token]
 |`dockerhub_secret_name`|string|Secret name to identify dockerhub secret for Kaniko push|
 |`github_access_token`|string|Access toke for github account. Used for repository clones|
 
-
 <br />
+
+__Before terraform can be applied__, an S3 bucket needs to be created to store the terraform state. Log into the AWS console and create a bucket with the name used in the `state_bucket_name` variable declaration above. If the bucket is not there, terraform will error out. Note the bucket name needs to be globally unique. A good pattern to use would be `opencloudcx-state-bucket-[last 4 of account number]`.
 <br />
 
 ## Run Terraform
@@ -251,7 +251,7 @@ AWS_PROFILE=<profile name> terraform init
 AWS_PROFILE=<profile name> terraform apply --auto-approve
 ```
 
-Output
+_Output_
 ```bash
 Apply complete! Resources: 105 added, 0 changed, 0 destroyed.
 
@@ -274,11 +274,10 @@ spinnaker_role_arn = "arn:aws:iam::[AWS_ACCOUNT]:role/riva-dev-module-test-[KEY]
 aws eks list-clusters --profile PROFILE_NAME --region us-east-1 | jq -r ".clusters[0]"
 ```
 
-Output
+_Output_
 ```bash
 riva-dev-module-test-[KEY]
 ```
-
 
 Update kubectl configuration with new cluster information
 ```
@@ -291,7 +290,7 @@ kubectl get pods --all-namespaces
 kubectl get ingress --A
 ```
 
-Output
+_Output_
 ```bash
 NAMESPACE        NAME                    CLASS    HOSTS                                           ADDRESS                                         PORTS   AGE
 anchore-engine   anchore                 <none>   anchore.[DNS_ZONE]                              [INGRESS_LB_NAME].us-east-1.elb.amazonaws.com   80      103m
@@ -314,7 +313,7 @@ spinnaker        spinnaker-gate          <none>   spinnaker-gate.[DNS_ZONE]     
 nslookup [INGRESS_LB_NAME].us-east-1.elb.amazonaws.com
 ```
 
-Output 
+_Output_ 
 ```bash
 Non-authoritative answer:
 Name:	[INGRESS_LB_NAME].us-east-1.elb.amazonaws.com
@@ -403,6 +402,7 @@ metadata:
   uid: [UUID]
 
 ```
+
 ---
 ---
 # Phase 3 -- Jenkins and OpenCloudCX Configuration
@@ -414,7 +414,7 @@ metadata:
 kubectl exec -it -n spinnaker spinnaker-spinnaker-halyard-0 -- bash -c "hal config ci jenkins"
 ```
 
-Output
+_Output_
 ```bash
 + Get current deployment
   Success
@@ -549,7 +549,7 @@ spec:
 6. Click `Save Changes`
 1. Click on the arrow at the top of the page to the left of the pipeline name or click back in the browser
 1. Click on `Start Manual Execution` on the same line as the pipeline name (not the one beside the configure drop down)
-1. Click `Run'
+1. Click `Run`
 
 Watch the execution of the pipeline throught he multiple defined stages. If any of the stages return RED, troubleshoot and re-execute.
 
