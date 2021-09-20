@@ -4,13 +4,28 @@
 ---
 ---
 
+# TL;DR
+1. terraform init/terraform apply
+1. update environment
+    - local hosts file with load balancer ip
+    - awd-auth config map with aws role
+    -  codebuild with jenkins admin api key
+1. run codebuild
+1. create application in spinnaker
+    - paste json as application definition
+    - refresh jenkins links (k8s-jenkins)
+1. run pipeline
+1. navigate to load balancer url
+
+---
+---
+
 # Usage instructions
 
 OpenCloudCX installs in a few separate pieces. This instruction set will outline the steps to get the stack up and running. This tutorial assumes access to a Linux instance. 
 
 ---
 ---
-
 # Phase 0 -- Toolset installation
 
 ## Windows System for Liunx
@@ -320,14 +335,28 @@ Test `http://portainer.riva-cicd-0044.local` to ensure everything has worked
 
 ## Get Jenkins admin token and add it to AWS CodeBuild environment configuration
 
-Screenshots
+1.  Retrieve Jenkins password
+```bash
+kubectl get secret --namespace jenkins jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode;echo
+```
+2. Log into Jenkins at the load balancer address from above with username: admin and the password from the previous step
+1. Navigate to User Credentials by selecting `Manage Jenkins` --> `Manage Users` --> `admin` --> `configure` --> `Add New Token`
+1. Copy the token after generation
+1. Log into the AWS Console with account access to AWS CodeBuild
+1. Select CodeBuild from the Services drop down
+1. Select the build project labled `ocxbootstrap-eayq`
+1. Click on the `Edit` menu and select `Environment`
+1. Expand `Additional configuration`
+1. Scroll down to `Environment Variables`
+1. Click on `Add environment variable`
+1. Enter `JENKINS_API_TOKEN` in the Name field
+1. Enter the API token generated in previous steps
+1. Click on `Update environment`
 
 ## Update EKS to allow AWS CodeBuild role to execute
-
 ```bash
 kubectl edit -n kube-system configmap/aws-auth
 ```
-
 Add the following information
 ```
     - rolearn: arn:aws:iam::725653950044:role/eayq-ocxbootstrap-codebuild-kubectl-role
@@ -357,22 +386,54 @@ data:
       username: system:node:{{EC2PrivateDNSName}}
 kind: ConfigMap
 metadata:
-  creationTimestamp: "2021-09-20T13:33:22Z"
+  creationTimestamp: "TIMESTAMP"
   name: aws-auth
   namespace: kube-system
-  resourceVersion: "16311"
-  uid: bf5c9d1d-95f1-4444-a900-0a287a11b4ba
+  resourceVersion: "VERSION"
+  uid: [UUID]]
 
 ```
-
+---
+---
 # Phase III -- Jenkins and OpenCloudCX Configuration
 
-## Execute AWS CodeBuild for configuration
+1.  From the AWS console, execute the CodeBuild project by selecting `Start Build` in the upper right hand corner
+1. Check Jenkins to see if the build jobs are defined in the dashboard
+1. Check OpenCloudCX to see if the jenkins configuration is present
+```bash
+kubectl exec -it -n spinnaker spinnaker-spinnaker-halyard-0 -- bash -c "hal config ci jenkins"
+```
 
+Output
+```bash
++ Get current deployment
+  Success
++ Get jenkins ci
+  Success
+Validation in default:
+- WARNING Version "1.19.12" was patched by "1.19.14". Please
+  upgrade when possible.
+? https://www.spinnaker.io/community/releases/versions/
+
+Validation in halconfig:
+- WARNING There is a newer version of Halyard available (1.44.1),
+  please update when possible
+? Run 'sudo apt-get update && sudo apt-get install
+  spinnaker-halyard -y' to upgrade
+
++ Configured jenkins ci: 
+{"enabled":true,"masters":[{"name":"k8s-jenkins","permissions":{},"address":"http://aacf594b7347c40239c4d14810a1c70c-1569543887.us-east-1.elb.amazonaws.com","username":"admin","password":"[JENKINS_ADMIN_TOKEN]"}]}
+```
+---
+---
 # Phase IV -- OpenCloudCX Pipeline Creation
 
 ## Create pipeline in OpenCloudCX
 
+"Screenshots"
+
+---
+---
 # Phase V -- Victory
 
 ## Navigate to URL for application display
