@@ -127,7 +127,14 @@ variable "dockerhub_secret" {
   type    = string
 }
 
-variable "github_access_token" {
+variable "dockerhub_secret_name" {
   type    = string
 }
 
+variable "dockerhub_username" {
+  type    = string
+}
+
+variable "github_access_token" {
+  type    = string
+}
