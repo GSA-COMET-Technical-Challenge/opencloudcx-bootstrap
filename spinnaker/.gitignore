@@ -6,3 +6,7 @@
 *.tfstate.*
 
 secrets**
+variables.auto.tfvars
+
+!secrets.example.tfvars
+!variables.example.tfvars
