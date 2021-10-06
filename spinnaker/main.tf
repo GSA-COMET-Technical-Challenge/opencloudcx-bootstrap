@@ -5,7 +5,7 @@ terraform {
 
   backend "s3" {
     key    = "opencloudcx"
-    bucket = "opencloudcx-state-bucket-6732"
+    bucket = "opencloudcx-state-bucket-6723"
     region = "us-east-1"
   }
 }
