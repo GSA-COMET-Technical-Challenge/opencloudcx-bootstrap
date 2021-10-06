@@ -42,7 +42,7 @@ module "opencloudcx" {
   region             = "us-east-1"
   azs                = ["us-east-1a", "us-east-1b", "us-east-1c"]
   cidr               = "10.0.0.0/16"
-  dns_zone           = "riva-cicd-0044.local"
+  dns_zone           = var.dns_zone
   kubernetes_version = "1.21"
   kubernetes_node_groups = {
     default = {
