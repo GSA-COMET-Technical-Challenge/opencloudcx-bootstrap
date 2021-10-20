@@ -53,6 +53,12 @@ variable "assume_role_arn" {
   default     = []
 }
 
+variable "kubernetes_secrets" {
+  description = "Kubernetes secrets to plant into ecosystem"
+  type        = map(any)
+  default     = {}
+}
+
 ### dns
 variable "dns_zone" {
   description = "The hosted zone name for internal dns, e.g., app.internal"
@@ -124,17 +130,17 @@ variable "tags" {
 }
 
 variable "dockerhub_secret" {
-  type    = string
+  type = string
 }
 
 variable "dockerhub_secret_name" {
-  type    = string
+  type = string
 }
 
 variable "dockerhub_username" {
-  type    = string
+  type = string
 }
 
 variable "github_access_token" {
-  type    = string
+  type = string
 }

@@ -48,15 +48,17 @@ module "opencloudcx" {
     default = {
       instance_type = "m5.large"
       min_size      = "1"
-      max_size      = "3"
-      desired_size  = "2"
+      max_size      = "4"
+      desired_size  = "3"
     }
   }
 
-  jenkins_secret   = random_password.jenkins_password.result
-  sonarqube_secret = random_password.sonarqube_password.result
-  github_access_token = var.github_access_token
-  aws_account_id = var.aws_account_id
+  jenkins_secret        = random_password.jenkins_password.result
+  sonarqube_secret      = random_password.sonarqube_password.result
+  keycloak_admin_secret = random_password.keycloak_admin_password.result
+  keycloak_user_secret  = random_password.keycloak_user_password.result
+  github_access_token   = var.github_access_token
+  aws_account_id        = var.aws_account_id
   # portainer_secret = aws_secretsmanager_secret.portainer_secret
 
   aurora_cluster = {
@@ -64,13 +66,22 @@ module "opencloudcx" {
     node_type = "db.t3.medium"
     version   = "5.7.12"
   }
+
+  # helm_repo          = "https://helmcharts.opsmx.com/"
+
   helm_chart_version = "2.2.3"
   helm_chart_values  = [file("values.yaml")]
-  assume_role_arn    = [module.spinnaker-managed-role.role_arn]
+  assume_role_arn = [
+    module.spinnaker-managed-role.role_arn
+  ]
 
-  dockerhub_secret_name = "ajnriva-cred"
-  dockerhub_username = "ajnriva"
-  dockerhub_secret = var.dockerhub_secret
+  # kubernetes_secrets = {
+  #   "ajn-personal" = kubernetes_secret.dockerhub_secret_ajn_personal
+  # }
+
+  # dockerhub_secret_name = "ajnriva-cred"
+  # dockerhub_username = "ajnriva"
+  # dockerhub_secret = var.dockerhub_secret
 }
 
 module "spinnaker-managed-role" {

@@ -58,5 +58,42 @@ resource "aws_secretsmanager_secret_version" "sonarqube_secret_version" {
 }
 
 
+##################################
+## Keycloak
+
+resource "aws_secretsmanager_secret" "keycloak_admin_secret" {
+  name                    = "${random_string.random.id}-keycloak-admin"
+  recovery_window_in_days = 0
+}
+
+resource "random_password" "keycloak_admin_password" {
+  length           = 24
+  special          = true
+  override_special = "_%@"
+}
+
+resource "aws_secretsmanager_secret_version" "keycloak_admin_secret_version" {
+  secret_id     = aws_secretsmanager_secret.keycloak_admin_secret.id
+  secret_string = "{\"username\": \"admin\", \"password\": \"${random_password.keycloak_admin_password.result}\"}"
+}
+
+
+resource "aws_secretsmanager_secret" "keycloak_user_secret" {
+  name                    = "${random_string.random.id}-keycloak-user"
+  recovery_window_in_days = 0
+}
+
+resource "random_password" "keycloak_user_password" {
+  length           = 24
+  special          = true
+  override_special = "_%@"
+}
+
+resource "aws_secretsmanager_secret_version" "keycloak_user_secret_version" {
+  secret_id     = aws_secretsmanager_secret.keycloak_user_secret.id
+  secret_string = "{\"username\": \"user\", \"password\": \"${random_password.keycloak_user_password.result}\"}"
+}
+
+
 
 
