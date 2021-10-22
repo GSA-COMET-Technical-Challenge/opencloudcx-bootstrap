@@ -26,3 +26,7 @@ output "kubeconfig" {
 output "ingress_hostname" {
   value = module.opencloudcx.ingress_hostname
 }
+
+output "ingress_hostname_secure" {
+  value = module.opencloudcx.ingress_hostname_secure
+}
