@@ -71,9 +71,7 @@ module "opencloudcx" {
 
   helm_chart_version = "2.2.3"
   helm_chart_values  = [file("values.yaml")]
-  assume_role_arn = [
-    module.spinnaker-managed-role.role_arn
-  ]
+  assume_role_arn = [module.spinnaker-managed-role.role_arn]
 
   # kubernetes_secrets = {
   #   "ajn-personal" = kubernetes_secret.dockerhub_secret_ajn_personal
