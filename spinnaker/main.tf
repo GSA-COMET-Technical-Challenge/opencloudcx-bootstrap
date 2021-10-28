@@ -57,7 +57,7 @@ module "opencloudcx" {
   sonarqube_secret      = random_password.sonarqube_password.result
   keycloak_admin_secret = random_password.keycloak_admin_password.result
   keycloak_user_secret  = random_password.keycloak_user_password.result
-  code_server_secret    = random_password.code_server.result
+  code_server_secret    = random_password.code_server_password.result
   github_access_token   = var.github_access_token
   aws_account_id        = var.aws_account_id
   # portainer_secret = aws_secretsmanager_secret.portainer_secret
